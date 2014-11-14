@@ -1,6 +1,10 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+# Make the scripts available in the 'cmake' directory available for the
+# 'include()' command, 'find_package()' command.
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Make directories for the binaries and libraries we create (if they don't exist)
 if( CMAKE_BUILD_TYPE STREQUAL Debug )
     set( BUILD_TYPE debug )
@@ -48,5 +52,16 @@ set(CMAKE_LIBRARY_PATH ${LIBRARY_OUTPUT_PATH} ${INSTALL_DIR}/lib64 ${CMAKE_LIBRA
 
 # Make CMake add each directory containing a CMakeLists.txt file to source search path
 set( CMAKE_INCLUDE_CURRENT_DIR ON )
+
+
+
+# Python is used throughout, might aswell include the headers here
+set( Python_ADDITIONAL_VERSIONS 2.7 2.6 2.5 2.4) # Force 2.x version
+find_package(PythonLibs)
+include_directories( ${PYTHON_INCLUDE_DIRS} )
+
+message(${PYTHON_INCLUDE_DIRS})
+message(${PYTHON_LIBRARIES})
+
 
 add_subdirectory( src )
